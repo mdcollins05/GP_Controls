@@ -7,3 +7,21 @@ name: GP_WildernessControl
 startup: postworld
 url: http://blockmovers.com/
 version: '0.1'
+depend: [GriefPrevention]
+commands:
+  gpwc:
+    usage: /<command>
+permissions:
+  gp_wc.admin:
+    default: false
+    children:
+      gp_wc.exempt.all: true
+  gp_wc.exempt.all:
+    default: false
+    children:
+      gp_wc.exempt.build: true
+      gp_wc.exempt.destroy: true
+  gp_wc.exempt.build:
+    default: false
+  gp_wc.exempt.destroy:
+    default: false
