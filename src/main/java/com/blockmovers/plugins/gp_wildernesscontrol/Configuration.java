@@ -44,6 +44,7 @@ public class Configuration {
         buildwhitelist.add(Material.CACTUS.name());
         buildwhitelist.add(Material.TORCH.name());
         buildwhitelist.add(Material.VINE.name());
+        buildwhitelist.add(Material.STONE.name());
         plugin.getConfig().addDefault("build.whitelist", buildwhitelist);
         
         //List<String> destroywhitelist = new ArrayList();

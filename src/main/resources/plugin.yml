@@ -11,11 +11,14 @@ depend: [GriefPrevention]
 commands:
   gpwc:
     usage: /<command>
+    aliases: [wildernesscontrol, wild]
 permissions:
   gp_wc.admin:
     default: false
     children:
       gp_wc.exempt.all: true
+      gp_wc.modify.buildlist: true
+      gp_wc.modify.destroylist: true
   gp_wc.exempt.all:
     default: false
     children:
@@ -24,4 +27,8 @@ permissions:
   gp_wc.exempt.build:
     default: false
   gp_wc.exempt.destroy:
+    default: false
+  gp_wc.modify.buildlist:
+    default: false
+  gp_wc.modify.destroylist:
     default: false
