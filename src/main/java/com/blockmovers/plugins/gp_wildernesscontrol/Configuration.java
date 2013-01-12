@@ -45,6 +45,7 @@ public class Configuration {
         buildwhitelist.add(Material.TORCH.name());
         buildwhitelist.add(Material.VINE.name());
         buildwhitelist.add(Material.STONE.name());
+        buildwhitelist.add(Material.SAPLING.name());
         plugin.getConfig().addDefault("build.whitelist", buildwhitelist);
         
         //List<String> destroywhitelist = new ArrayList();
@@ -66,5 +67,10 @@ public class Configuration {
             templist.add(s.toLowerCase());
         }
         buildWhitelist = templist;
+    }
+    
+    public void setListValue(String node, List value) {
+        plugin.getConfig().set(node, value);
+        plugin.saveConfig();
     }
 }
