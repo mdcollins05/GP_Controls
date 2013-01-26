@@ -1,4 +1,4 @@
-package com.blockmovers.plugins.gp_wildernesscontrol;
+package com.blockmovers.plugins.gp_controller;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -19,11 +19,11 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.ChatPaginator;
 
-public class GP_WildernessControl extends JavaPlugin implements Listener {
+public class GP_Controller extends JavaPlugin implements Listener {
 
     static final Logger log = Logger.getLogger("Minecraft"); //set up our logger
     private Configuration config = new Configuration(this);
-    private String msg_prefix = ChatColor.GOLD + "[" + ChatColor.WHITE + "GP_WC" + ChatColor.GOLD + "] ";
+    private String msg_prefix = ChatColor.GOLD + "[" + ChatColor.WHITE + "GP_C" + ChatColor.GOLD + "] ";
 
     public void onEnable() {
         PluginDescriptionFile pdffile = this.getDescription();
@@ -43,14 +43,14 @@ public class GP_WildernessControl extends JavaPlugin implements Listener {
     }
 
     public boolean onCommand(CommandSender cs, Command cmd, String alias, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("gpwc")) {
+        if (cmd.getName().equalsIgnoreCase("wild")) {
             if (args.length >= 1) {
                 if (args[0].equalsIgnoreCase("version")) {
                     PluginDescriptionFile pdf = this.getDescription();
                     cs.sendMessage(this.msg_prefix + pdf.getName() + " " + pdf.getVersion() + " by MDCollins05");
                     return true;
                 } else if (args[0].equalsIgnoreCase("build")) {
-                    if (this.hasServerPerm(cs, true, "gp_wc.modify.buildlist")) {
+                    if (this.hasServerPerm(cs, true, "gp_c.modify.buildlist")) {
                         if (args.length <= 1) {
                             cs.sendMessage(this.msg_prefix + ChatColor.RED + "Valid options are list, add, remove.");
                             return true;
@@ -97,6 +97,35 @@ public class GP_WildernessControl extends JavaPlugin implements Listener {
             }
             return true;
         }
+
+        if (cmd.getName().equalsIgnoreCase("toggle")) {
+            Long claimID = null;
+            if (args.length >= 1) {
+                if (args[0].equalsIgnoreCase("version")) {
+                    PluginDescriptionFile pdf = this.getDescription();
+                    cs.sendMessage(this.msg_prefix + pdf.getName() + " " + pdf.getVersion() + " by MDCollins05");
+                    return true;
+                } else if (args[0].equalsIgnoreCase("pvp")) {
+                    if (!(cs instanceof Player)) {
+                        claimID = -1;
+                    } else {
+                        Player p = (Player) cs;
+                        Claim c = this.getClaim(p.getLocation());
+                        claimID = c.getID();
+                        String claimOwner = c.getOwnerName();
+                        
+                    }
+
+
+                } else {
+                    return false;
+                }
+            } else {
+                cs.sendMessage(this.msg_prefix + ChatColor.RED + "Valid options are version, mobs and pvp");
+                return true;
+            }
+            return true;
+        }
         return false;
     }
 
@@ -106,7 +135,7 @@ public class GP_WildernessControl extends JavaPlugin implements Listener {
             return;
         }
         Player p = event.getPlayer();
-        if (p.hasPermission("gp_wc.exempt.build")) {
+        if (p.hasPermission("gp_c.exempt.build")) {
             return;
         }
         if (!this.inClaim(event.getBlock().getLocation())) {
@@ -132,8 +161,12 @@ public class GP_WildernessControl extends JavaPlugin implements Listener {
 //            //ToDo: Add whitelisting/blacklisting of blocks if not inside claims
 //        }
 //    }
+    private Claim getClaim(Location l) {
+        return GriefPrevention.instance.dataStore.getClaimAt(l, true, null);
+    }
+
     private boolean inClaim(Location l) {
-        Claim claim = GriefPrevention.instance.dataStore.getClaimAt(l, true, null);
+        Claim claim = this.getClaim(l);
         if (claim == null) { //Not in a claim
             return false;
         }

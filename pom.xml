@@ -1,9 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.blockmovers.plugins.gp_wildernesscontrol</groupId>
-    <artifactId>GP_WildernessControl</artifactId>
+    <artifactId>GP_Controller</artifactId>
     <version>0.1</version>
-    <name>GP_WildernessControl</name>
+    <name>GP_Controller</name>
     <url>http://blockmovers.com/</url>
     <repositories>
         <repository>

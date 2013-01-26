@@ -1,34 +1,46 @@
 author: MDCollins
 database: false
-description: Wilderness control for Grief Prevention
+description: Additional control for Grief Prevention
 generator: http://dinnerbone.com/minecraft/tools/pluginator/
-main: com.blockmovers.plugins.gp_wildernesscontrol.GP_WildernessControl
-name: GP_WildernessControl
+main: com.blockmovers.plugins.gp_controller.GP_Controller
+name: GP_Controller
 startup: postworld
 url: http://blockmovers.com/
 version: '0.1'
 depend: [GriefPrevention]
 commands:
-  gpwc:
+  wild:
     usage: /<command>
-    aliases: [wildernesscontrol, wild]
+    aliases: wilderness
+  toggle:
+    usage: /<command>
 permissions:
-  gp_wc.admin:
+  gp_c.admin:
     default: false
     children:
-      gp_wc.exempt.all: true
-      gp_wc.modify.buildlist: true
-      gp_wc.modify.destroylist: true
-  gp_wc.exempt.all:
+      gp_c.exempt.all: true
+      gp_c.modify.buildlist: true
+      gp_c.modify.destroylist: true
+      gp_c.toggle.pvp.any: true
+      gp_c.toggle.mobs.any: true
+  gp_c.exempt.all:
     default: false
     children:
-      gp_wc.exempt.build: true
-      gp_wc.exempt.destroy: true
-  gp_wc.exempt.build:
+      gp_c.exempt.build: true
+      gp_c.exempt.destroy: true
+  gp_c.exempt.build:
     default: false
-  gp_wc.exempt.destroy:
+  gp_c.exempt.destroy:
     default: false
-  gp_wc.modify.buildlist:
+  gp_c.modify.buildlist:
     default: false
-  gp_wc.modify.destroylist:
+  gp_c.modify.destroylist:
+    default: false
+  gp_c.toggle.pvp.any:
+    default: false
+  gp_c.toggle.pvp.self:
+    default false:
+  gp_c.toggle.mobs.any:
+    default: false
+  gp_c.toggle.mobs.self:
     default: false
