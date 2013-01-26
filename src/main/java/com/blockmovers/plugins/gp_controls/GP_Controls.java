@@ -1,4 +1,4 @@
-package com.blockmovers.plugins.gp_controller;
+package com.blockmovers.plugins.gp_controls;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -19,7 +19,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.ChatPaginator;
 
-public class GP_Controller extends JavaPlugin implements Listener {
+public class GP_Controls extends JavaPlugin implements Listener {
 
     static final Logger log = Logger.getLogger("Minecraft"); //set up our logger
     private Configuration config = new Configuration(this);
@@ -107,12 +107,13 @@ public class GP_Controller extends JavaPlugin implements Listener {
                     return true;
                 } else if (args[0].equalsIgnoreCase("pvp")) {
                     if (!(cs instanceof Player)) {
-                        claimID = -1;
+                        claimID = -1l;
                     } else {
                         Player p = (Player) cs;
                         Claim c = this.getClaim(p.getLocation());
                         claimID = c.getID();
                         String claimOwner = c.getOwnerName();
+                        
                         
                     }
 

@@ -2,8 +2,8 @@ author: MDCollins
 database: false
 description: Additional control for Grief Prevention
 generator: http://dinnerbone.com/minecraft/tools/pluginator/
-main: com.blockmovers.plugins.gp_controller.GP_Controller
-name: GP_Controller
+main: com.blockmovers.plugins.gp_controls.GP_Controls
+name: GP_Controls
 startup: postworld
 url: http://blockmovers.com/
 version: '0.1'

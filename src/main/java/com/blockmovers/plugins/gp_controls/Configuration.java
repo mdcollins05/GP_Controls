@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.blockmovers.plugins.gp_controller;
+package com.blockmovers.plugins.gp_controls;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,13 +14,13 @@ import org.bukkit.Material;
  */
 public class Configuration {
 
-    GP_Controller plugin = null;
+    GP_Controls plugin = null;
     public List<String> buildWhitelist = new ArrayList();
     //public List<String> destroyWhitelist = new ArrayList();
     public List<Long> DisablePVPList = new ArrayList();
     public List<Long> DisableMobList = new ArrayList();
 
-    public Configuration(GP_Controller plugin) {
+    public Configuration(GP_Controls plugin) {
         this.plugin = plugin;
     }
 
