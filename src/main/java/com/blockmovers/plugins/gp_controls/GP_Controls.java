@@ -113,7 +113,20 @@ public class GP_Controls extends JavaPlugin implements Listener {
                         Claim c = this.getClaim(p.getLocation());
                         claimID = c.getID();
                         String claimOwner = c.getOwnerName();
-                        
+                        if (claimID == null) {
+                            claimID = -1l;
+                        }
+                        if (!p.getName().equals(claimOwner)) {
+                            if (!this.hasServerPerm(cs, false, "gp_c.toggle.mobs.any")) {
+                                cs.sendMessage(ChatColor.RED + "You do not have permissions to change the wilderness!");
+                                return true;
+                            }
+                        } else {
+                            if (!this.hasServerPerm(cs, false, "gp_c.toggle.mobs.self")) {
+                                cs.sendMessage(ChatColor.RED + "You do not have permission to do this!");
+                                return true;
+                            }
+                        }
                         
                     }
 

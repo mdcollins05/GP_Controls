@@ -17,8 +17,10 @@ public class Configuration {
     GP_Controls plugin = null;
     public List<String> buildWhitelist = new ArrayList();
     //public List<String> destroyWhitelist = new ArrayList();
-    public List<Long> DisablePVPList = new ArrayList();
-    public List<Long> DisableMobList = new ArrayList();
+    public List<Long> disablePVPList = new ArrayList();
+    public List<Long> disableMobList = new ArrayList();
+    public Boolean defaultPVP = false;
+    public Boolean defaultMob = false;
 
     public Configuration(GP_Controls plugin) {
         this.plugin = plugin;
@@ -47,6 +49,8 @@ public class Configuration {
         buildwhitelist.add(Material.STONE.name());
         buildwhitelist.add(Material.SAPLING.name());
         plugin.getConfig().addDefault("build.whitelist", buildwhitelist);
+        plugin.getConfig().addDefault("default.enable.pvp", true);
+        plugin.getConfig().addDefault("default.enable.mobs", true);
 
         //List<String> destroywhitelist = new ArrayList();
         //destroywhitelist.add("login");
@@ -68,8 +72,8 @@ public class Configuration {
         }
         this.buildWhitelist = templist;
 
-        this.DisablePVPList = plugin.getConfig().getLongList("disable.pvp");
-        this.DisableMobList = plugin.getConfig().getLongList("disable.mobs");
+        this.disablePVPList = plugin.getConfig().getLongList("disable.pvp");
+        this.disableMobList = plugin.getConfig().getLongList("disable.mobs");
     }
 
     public void setListValue(String node, List value) {
@@ -78,21 +82,21 @@ public class Configuration {
     }
 
     public boolean togglePVP(Long cid) {
-        if (this.DisablePVPList.contains(cid)) {
-            this.DisablePVPList.remove(cid);
+        if (this.disablePVPList.contains(cid)) {
+            this.disablePVPList.remove(cid);
             return true;
         } else {
-            this.DisablePVPList.add(cid);
+            this.disablePVPList.add(cid);
             return false;
         }
     }
     
     public boolean toggleMobs(Long cid) {
-        if (this.DisableMobList.contains(cid)) {
-            this.DisableMobList.remove(cid);
+        if (this.disableMobList.contains(cid)) {
+            this.disableMobList.remove(cid);
             return true;
         } else {
-            this.DisableMobList.add(cid);
+            this.disableMobList.add(cid);
             return false;
         }
     }
