@@ -21,8 +21,8 @@ permissions:
       gp_c.exempt.all: true
       gp_c.modify.buildlist: true
       gp_c.modify.destroylist: true
-      gp_c.toggle.pvp.any: true
-      gp_c.toggle.mobs.any: true
+      gp_c.toggle.all.any: true
+      gp_c.toggle.all.self: true
   gp_c.exempt.all:
     default: false
     children:
@@ -36,11 +36,25 @@ permissions:
     default: false
   gp_c.modify.destroylist:
     default: false
+  gp_c.toggle.all.any:
+    default: false
+    children:
+      gp_c.toggle.pvp.any: true
+      gp_c.toggle.mobs.any: true
+  gp_c.toggle.all.self:
+    default: false
+    children:
+      gp_c.toggle.pvp.self: true
+      gp_c.toggle.mobs.self: true
   gp_c.toggle.pvp.any:
     default: false
-  gp_c.toggle.pvp.self:
-    default false:
+    children:
+      gp_c.toggle.pvp.self: true
   gp_c.toggle.mobs.any:
+    default: false
+    children:
+      gp_c.toggle.mobs.self: true
+  gp_c.toggle.pvp.self:
     default: false
   gp_c.toggle.mobs.self:
     default: false
