@@ -4,11 +4,16 @@
  */
 package com.blockmovers.plugins.gp_controls;
 
+import me.ryanhamshire.GriefPrevention.Claim;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 /**
  *
@@ -54,4 +59,59 @@ public class Listeners implements Listener {
 //            //ToDo: Add whitelisting/blacklisting of blocks if not inside claims
 //        }
 //    }
+    @EventHandler
+    public void onCreatureSpawn(CreatureSpawnEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
+        Claim c = this.plugin.util.getClaim(event.getLocation());
+        Long claimID = null;
+        if (c == null) {
+            claimID = -1l;
+        } else {
+            claimID = c.getID();
+        }
+        //We listen for custom because that's a plugin spawning 'em
+        if (event.getSpawnReason().equals(CreatureSpawnEvent.SpawnReason.CHUNK_GEN)
+                || event.getSpawnReason().equals(CreatureSpawnEvent.SpawnReason.NATURAL)
+                || event.getSpawnReason().equals(CreatureSpawnEvent.SpawnReason.CUSTOM)) {
+            if (this.plugin.goodMobs.contains(event.getEntityType().getName())) {
+                if (!this.plugin.config.getAnimals(claimID)) {
+                    event.setCancelled(true);
+                }
+            } else {
+                if (!this.plugin.config.getMobs(claimID)) {
+                    event.setCancelled(true);
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onEntityDamage(EntityDamageByEntityEvent event) {
+        if (event.isCancelled()) {
+            return;
+        }
+
+        Entity att = event.getDamager();
+        Player attacker = null;
+        if (att instanceof Player) {
+            attacker = (Player) att;
+        } else if (att instanceof Projectile) {
+            Projectile arr = (Projectile) att;
+            Entity e = arr.getShooter();
+            if (e instanceof Player) {
+                attacker = (Player) e;
+            }
+        }
+
+        if (event.getEntity() instanceof Player && attacker instanceof Player) {
+            boolean attackerPVP = this.plugin.config.getPVP(this.plugin.util.getClaimID(attacker.getLocation()));
+            boolean attackedPVP = this.plugin.config.getPVP(this.plugin.util.getClaimID(event.getEntity().getLocation()));
+            Boolean cancel = !(attackerPVP & attackedPVP);
+            if (cancel) {
+                event.setCancelled(true);
+            }
+        }
+    }
 }

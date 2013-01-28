@@ -23,6 +23,7 @@ permissions:
       gp_c.modify.destroylist: true
       gp_c.toggle.all.any: true
       gp_c.toggle.all.self: true
+      gp_c.toggle.defaults: true
   gp_c.exempt.all:
     default: false
     children:
@@ -57,4 +58,6 @@ permissions:
   gp_c.toggle.pvp.self:
     default: false
   gp_c.toggle.mobs.self:
+    default: false
+  gp_c.toggle.defaults:
     default: false

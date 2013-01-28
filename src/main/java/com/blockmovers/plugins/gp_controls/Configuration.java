@@ -5,7 +5,10 @@
 package com.blockmovers.plugins.gp_controls;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import org.bukkit.Material;
 
 /**
@@ -17,9 +20,9 @@ public class Configuration {
     GP_Controls plugin = null;
     public List<String> buildWhitelist = new ArrayList();
     //public List<String> destroyWhitelist = new ArrayList();
-    public List<Long> disablePVPList = new ArrayList();
-    public List<Long> disableMobList = new ArrayList();
-    public List<Long> disableAnimalList = new ArrayList();
+    public Map<Long, Boolean> PVPList = new HashMap();
+    public Map<Long, Boolean> MobList = new HashMap();
+    public Map<Long, Boolean> AnimalList = new HashMap();
     public Boolean defaultPVP = false;
     public Boolean defaultMobs = false;
     public Boolean defaultAnimals = false;
@@ -75,54 +78,124 @@ public class Configuration {
         }
         this.buildWhitelist = templist;
 
-        this.disablePVPList = plugin.getConfig().getLongList("disable.pvp");
-        this.disableMobList = plugin.getConfig().getLongList("disable.mobs");
-        this.disableMobList = plugin.getConfig().getLongList("disable.animals");
-        
+        this.PVPList = this.parseStringList(plugin.getConfig().getStringList("pvp"));
+        this.MobList = this.parseStringList(plugin.getConfig().getStringList("mobs"));
+        this.AnimalList = this.parseStringList(plugin.getConfig().getStringList("animals"));
+
         this.defaultPVP = plugin.getConfig().getBoolean("default.enable.pvp");
         this.defaultMobs = plugin.getConfig().getBoolean("default.enable.mobs");
         this.defaultAnimals = plugin.getConfig().getBoolean("default.enable.animals");
-        
-    }
 
+    }
+    
     public void setListValue(String node, List value) {
         plugin.getConfig().set(node, value);
         plugin.saveConfig();
     }
 
+    public Map parseStringList(List<String> theList) {
+        Map<Long, Boolean> theMap = new HashMap();
+        for (String s : theList) {
+            String[] allSplitUp = s.split(":");
+            try {
+                theMap.put(Long.valueOf(allSplitUp[0]), Boolean.valueOf(allSplitUp[1]));
+            } catch(Exception e) {
+                this.plugin.log.severe("Something went wrong in the config (Did you change something by hand?)");
+            }
+        }
+        return theMap;
+    }
+
+    public List<String> parseLongBooleanMap(Map<Long, Boolean> theMap) {
+        List<String> theList = new ArrayList();
+        Iterator entries = theMap.entrySet().iterator();
+        while (entries.hasNext()) {
+            Map.Entry entry = (Map.Entry) entries.next();
+            theList.add(entry.getKey() + ":" + entry.getValue());
+        }
+        return theList;
+    }
+
+    public boolean toggleMapClaim(Long cid, Map<Long, Boolean> map, Boolean defValue) {
+        if (map.containsKey(cid)) {
+            if (map.get(cid)) {
+                map.put(cid, false);
+                return false;
+            } else {
+                map.put(cid, true);
+                return true;
+            }
+        } else {
+            map.put(cid, !defValue);
+            return !defValue;
+        }
+    }
+
     public boolean togglePVP(Long cid) {
-        if (this.disablePVPList.contains(cid)) {
-            this.disablePVPList.remove(cid);
-            this.setListValue("disable.pvp", disablePVPList);
-            return true;
-        } else {
-            this.disablePVPList.add(cid);
-            this.setListValue("disable.pvp", disablePVPList);
-            return false;
-        }
+        Boolean value = this.toggleMapClaim(cid, this.PVPList, this.defaultPVP);
+        this.plugin.getConfig().set("pvp", this.parseLongBooleanMap(PVPList));
+        this.plugin.saveConfig();
+        return value;
     }
-    
+
     public boolean toggleMobs(Long cid) {
-        if (this.disableMobList.contains(cid)) {
-            this.disableMobList.remove(cid);
-            this.setListValue("disable.mobs", disableMobList);
-            return true;
-        } else {
-            this.disableMobList.add(cid);
-            this.setListValue("disable.mobs", disableMobList);
-            return false;
+        Boolean value = this.toggleMapClaim(cid, this.MobList, this.defaultMobs);
+        this.plugin.getConfig().set("mobs", this.parseLongBooleanMap(MobList));
+        this.plugin.saveConfig();
+        return value;
+    }
+
+    public boolean toggleAnimals(Long cid) {
+        Boolean value = this.toggleMapClaim(cid, this.AnimalList, this.defaultAnimals);
+        this.plugin.getConfig().set("animals", this.parseLongBooleanMap(AnimalList));
+        this.plugin.saveConfig();
+        return value;
+    }
+
+    public boolean getBooleanClaim(Long cid, Map<Long, Boolean> map, Boolean defValue) {
+        if (map.containsKey(cid)) {
+            return map.get(cid);
         }
+        return defValue;
+    }
+
+    public boolean getPVP(Long cid) {
+        return this.getBooleanClaim(cid, this.PVPList, this.defaultPVP);
+    }
+
+    public boolean getMobs(Long cid) {
+        return this.getBooleanClaim(cid, this.MobList, this.defaultMobs);
+    }
+
+    public boolean getAnimals(Long cid) {
+        return this.getBooleanClaim(cid, this.AnimalList, this.defaultAnimals);
     }
     
-    public boolean toggleAnimals(Long cid) {
-        if (this.disableAnimalList.contains(cid)) {
-            this.disableAnimalList.remove(cid);
-            this.setListValue("disable.animals", disableAnimalList);
-            return true;
-        } else {
-            this.disableAnimalList.add(cid);
-            this.setListValue("disable.animals", disableAnimalList);
-            return false;
-        }
+    public boolean toggleItem(Boolean node) {
+        return !node;
+    }
+    
+    public boolean toggleDefaultPVP() {
+        boolean newValue = this.toggleItem(this.defaultPVP);
+        this.defaultPVP = newValue;
+        this.plugin.getConfig().set("default.enable.pvp", newValue);
+        this.plugin.saveConfig();
+        return newValue;
+    }
+    
+    public boolean toggleDefaultMobs() {
+        boolean newValue = this.toggleItem(this.defaultMobs);
+        this.defaultMobs = newValue;
+        this.plugin.getConfig().set("default.enable.mobs", newValue);
+        this.plugin.saveConfig();
+        return newValue;
+    }
+    
+    public boolean toggleDefaultAnimals() {
+        boolean newValue = this.toggleItem(this.defaultAnimals);
+        this.defaultAnimals = newValue;
+        this.plugin.getConfig().set("default.enable.animals", newValue);
+        this.plugin.saveConfig();
+        return newValue;
     }
 }

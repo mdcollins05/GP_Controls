@@ -28,6 +28,22 @@ public class Utilities {
     public Claim getClaim(Location l) {
         return GriefPrevention.instance.dataStore.getClaimAt(l, true, null);
     }
+    
+    public Long getClaimID(Location l) {
+        Claim c = this.getClaim(l);
+        if (c == null) {
+            return -1l;
+        }
+        return c.getID();
+    }
+    
+    public String getClaimOwner(Location l) {
+        Claim c = this.getClaim(l);
+        if (c == null) {
+            return "";
+        }
+        return c.getOwnerName();
+    }
 
     public boolean inClaim(Location l) {
         Claim claim = this.getClaim(l);
@@ -80,5 +96,12 @@ public class Utilities {
 
     public String[] wrapThatShit(String thingToWrap) {
         return ChatPaginator.wordWrap(thingToWrap, ChatPaginator.GUARANTEED_NO_WRAP_CHAT_PAGE_WIDTH);
+    }
+    
+    public boolean isGoodMob(String mob) {
+        if (this.plugin.goodMobs.contains(mob)) {
+            return true;
+        }
+        return false;
     }
 }
