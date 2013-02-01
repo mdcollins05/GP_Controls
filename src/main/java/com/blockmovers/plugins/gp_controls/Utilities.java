@@ -31,10 +31,16 @@ public class Utilities {
     
     public Long getClaimID(Location l) {
         Claim c = this.getClaim(l);
+        Long claimID;
         if (c == null) {
             return -1l;
         }
-        return c.getID();
+        try {
+            claimID = c.getID();
+        } catch (NullPointerException e) {
+            claimID = c.parent.getID();
+        }
+        return claimID;
     }
     
     public String getClaimOwner(Location l) {

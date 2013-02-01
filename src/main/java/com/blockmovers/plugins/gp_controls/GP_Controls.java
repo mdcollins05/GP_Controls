@@ -176,11 +176,23 @@ public class GP_Controls extends JavaPlugin implements Listener {
                             return true;
                         }
                         if (args[1].equalsIgnoreCase("pvp")) {
-                            //todo
-                        } else if (args[1].equalsIgnoreCase("pvp")) {
-                            //todo
-                        } else if (args[1].equalsIgnoreCase("pvp")) {
-                            //todo
+                            if (this.config.toggleDefaultPVP()) {
+                                cs.sendMessage(this.msg_prefix + ChatColor.GREEN + "You've toggled the default PVP option to ON!");
+                            } else {
+                                cs.sendMessage(this.msg_prefix + ChatColor.GREEN + "You've toggled the default PVP option to OFF!");
+                            }
+                        } else if (args[1].equalsIgnoreCase("mobs")) {
+                            if (this.config.toggleDefaultMobs()) {
+                                cs.sendMessage(this.msg_prefix + ChatColor.GREEN + "You've toggled the default Mobs option to ON!");
+                            } else {
+                                cs.sendMessage(this.msg_prefix + ChatColor.GREEN + "You've toggled the default Mobs option to OFF!");
+                            }
+                        } else if (args[1].equalsIgnoreCase("animals")) {
+                            if (this.config.toggleDefaultAnimals()) {
+                                cs.sendMessage(this.msg_prefix + ChatColor.GREEN + "You've toggled the default Animals option to ON!");
+                            } else {
+                                cs.sendMessage(this.msg_prefix + ChatColor.GREEN + "You've toggled the default Animals option to OFF!");
+                            }
                         }
                     } else {
                         cs.sendMessage(this.msg_prefix + ChatColor.RED + "Valid options are pvp, mobs and animals");
@@ -215,7 +227,7 @@ public class GP_Controls extends JavaPlugin implements Listener {
                     sb.append("OFF");
                 }
                 cs.sendMessage(this.msg_prefix + sb.toString());
-                cs.sendMessage(this.msg_prefix + ChatColor.RED + "Valid options are version, mobs, animals, pvp and view");
+                cs.sendMessage(this.msg_prefix + ChatColor.RED + "Valid options are version, mobs, animals, pvp and default");
                 return true;
             }
             return true;
