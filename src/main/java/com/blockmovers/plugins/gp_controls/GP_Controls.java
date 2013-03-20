@@ -170,18 +170,6 @@ public class GP_Controls extends JavaPlugin implements Listener {
                             cs.sendMessage(this.msg_prefix + ChatColor.GREEN + "You've toggled PVP in this claim OFF!");
                         }
                     }
-                } else if (args[0].equalsIgnoreCase("info")) {
-                    if (!(cs instanceof Player)) { //Is most likely console
-                        claimID = -1l;
-                    } else {
-                        p = (Player) cs;
-                        claimID = this.util.getClaimID(p.getLocation());
-                        claimOwner = this.util.getClaimOwner(p.getLocation());
-                    }
-                    if (claimOwner == null) {
-                        claimOwner = "An Administrator";
-                    }
-                    cs.sendMessage(this.msg_prefix + ChatColor.GREEN + "ClaimID: " + claimID + "; ClaimOwner:" + claimOwner);
                 } else if (args[0].equalsIgnoreCase("clean")) {
                     //For the future when I can get a claim by ID to remove IDs that no longer exist (please bigscary? :D)
                 } else if (args[0].equalsIgnoreCase("default")) {
@@ -221,6 +209,7 @@ public class GP_Controls extends JavaPlugin implements Listener {
                 } else {
                     p = (Player) cs;
                     claimID = this.util.getClaimID(p.getLocation());
+                    claimOwner = this.util.getClaimOwner(p.getLocation());
                 }
                 StringBuilder sb = new StringBuilder();
                 sb.append("Where you stand; PVP: ");
@@ -241,6 +230,10 @@ public class GP_Controls extends JavaPlugin implements Listener {
                 } else {
                     sb.append("OFF");
                 }
+                if (claimOwner == null) {
+                    claimOwner = "Administrator";
+                }
+                cs.sendMessage(this.msg_prefix + ChatColor.GREEN + "ClaimID: " + claimID + "; ClaimOwner: " + claimOwner);
                 cs.sendMessage(this.msg_prefix + sb.toString());
                 cs.sendMessage(this.msg_prefix + ChatColor.RED + "Valid options are version, mobs, animals, pvp and default");
                 return true;
