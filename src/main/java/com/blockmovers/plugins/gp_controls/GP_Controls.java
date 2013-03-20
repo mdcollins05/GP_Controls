@@ -214,26 +214,26 @@ public class GP_Controls extends JavaPlugin implements Listener {
                 StringBuilder sb = new StringBuilder();
                 sb.append("Where you stand; PVP: ");
                 if (this.config.getPVP(claimID)) {
-                    sb.append("ON");
+                    sb.append(ChatColor.GREEN).append("ON").append(ChatColor.RESET);
                 } else {
-                    sb.append("OFF");
+                    sb.append(ChatColor.RED).append("OFF").append(ChatColor.RESET);
                 }
                 sb.append("; Mobs: ");
                 if (this.config.getMobs(claimID)) {
-                    sb.append("ON");
+                    sb.append(ChatColor.GREEN).append("ON").append(ChatColor.RESET);
                 } else {
-                    sb.append("OFF");
+                    sb.append(ChatColor.RED).append("OFF").append(ChatColor.RESET);
                 }
                 sb.append("; Animals: ");
                 if (this.config.getAnimals(claimID)) {
-                    sb.append("ON");
+                    sb.append(ChatColor.GREEN).append("ON").append(ChatColor.RESET);
                 } else {
-                    sb.append("OFF");
+                    sb.append(ChatColor.RED).append("OFF").append(ChatColor.RESET);
                 }
-                if (claimOwner == null) {
+                if (claimOwner.equalsIgnoreCase("an administrator")) {
                     claimOwner = "Administrator";
                 }
-                cs.sendMessage(this.msg_prefix + ChatColor.GREEN + "ClaimID: " + claimID + "; ClaimOwner: " + claimOwner);
+                cs.sendMessage(this.msg_prefix + "ClaimID: " + ChatColor.GREEN + claimID + ChatColor.RESET + "; ClaimOwner: " + ChatColor.GREEN + claimOwner + ChatColor.RESET);
                 cs.sendMessage(this.msg_prefix + sb.toString());
                 cs.sendMessage(this.msg_prefix + ChatColor.RED + "Valid options are version, mobs, animals, pvp and default");
                 return true;
