@@ -70,6 +70,9 @@ public class GP_Controls extends JavaPlugin implements Listener {
                                 cs.sendMessage(this.msg_prefix + ChatColor.RED + "Unknown material '" + args[2] + "'!");
                                 return true;
                             }
+                            //if (args.length == 4) { //do stuff for world specific stuff vs global
+                            //    
+                            //}
                             Boolean onList = this.config.buildWhitelist.contains(material.name().toLowerCase());
                             if (args[1].equalsIgnoreCase("add")) {
                                 if (onList) {
@@ -167,6 +170,18 @@ public class GP_Controls extends JavaPlugin implements Listener {
                             cs.sendMessage(this.msg_prefix + ChatColor.GREEN + "You've toggled PVP in this claim OFF!");
                         }
                     }
+                } else if (args[0].equalsIgnoreCase("info")) {
+                    if (!(cs instanceof Player)) { //Is most likely console
+                        claimID = -1l;
+                    } else {
+                        p = (Player) cs;
+                        claimID = this.util.getClaimID(p.getLocation());
+                        claimOwner = this.util.getClaimOwner(p.getLocation());
+                    }
+                    if (claimOwner == null) {
+                        claimOwner = "An Administrator";
+                    }
+                    cs.sendMessage(this.msg_prefix + ChatColor.GREEN + "ClaimID: " + claimID + "; ClaimOwner:" + claimOwner);
                 } else if (args[0].equalsIgnoreCase("clean")) {
                     //For the future when I can get a claim by ID to remove IDs that no longer exist (please bigscary? :D)
                 } else if (args[0].equalsIgnoreCase("default")) {

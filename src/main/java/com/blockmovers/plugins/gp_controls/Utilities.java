@@ -18,17 +18,17 @@ import org.bukkit.util.ChatPaginator;
  * @author MattC
  */
 public class Utilities {
-    
+
     GP_Controls plugin = null;
 
     public Utilities(GP_Controls plugin) {
         this.plugin = plugin;
     }
-    
+
     public Claim getClaim(Location l) {
         return GriefPrevention.instance.dataStore.getClaimAt(l, true, null);
     }
-    
+
     public Long getClaimID(Location l) {
         Claim c = this.getClaim(l);
         Long claimID;
@@ -37,12 +37,15 @@ public class Utilities {
         }
         try {
             claimID = c.getID();
+            if (claimID == null) {
+                claimID = c.parent.getID();
+            }
         } catch (NullPointerException e) {
             claimID = c.parent.getID();
         }
         return claimID;
     }
-    
+
     public String getClaimOwner(Location l) {
         Claim c = this.getClaim(l);
         if (c == null) {
@@ -103,11 +106,19 @@ public class Utilities {
     public String[] wrapThatShit(String thingToWrap) {
         return ChatPaginator.wordWrap(thingToWrap, ChatPaginator.GUARANTEED_NO_WRAP_CHAT_PAGE_WIDTH);
     }
-    
+
     public boolean isGoodMob(String mob) {
         if (this.plugin.goodMobs.contains(mob)) {
             return true;
         }
         return false;
+    }
+
+    public boolean worldEnabled(String w) {
+        if (this.plugin.config.genWorldsEnabled.contains(w)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

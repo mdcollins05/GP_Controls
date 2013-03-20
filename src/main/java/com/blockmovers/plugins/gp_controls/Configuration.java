@@ -18,6 +18,7 @@ import org.bukkit.Material;
 public class Configuration {
 
     GP_Controls plugin = null;
+    public List<String> genWorldsEnabled = new ArrayList();
     public List<String> buildWhitelist = new ArrayList();
     //public List<String> destroyWhitelist = new ArrayList();
     public Map<Long, Boolean> PVPList = new HashMap();
@@ -37,6 +38,7 @@ public class Configuration {
     }
 
     public void loadConfiguration() {
+        plugin.getConfig().addDefault("general.worlds.enable", "");
         List<String> buildwhitelist = new ArrayList();
         buildwhitelist.add(Material.CHEST.name());
         buildwhitelist.add(Material.DIRT.name());
@@ -71,6 +73,7 @@ public class Configuration {
     }
 
     public void setVars() {
+        this.genWorldsEnabled = plugin.getConfig().getStringList("general.worlds.enable");
         this.buildWhitelist = plugin.getConfig().getStringList("build.whitelist");
         List templist = new ArrayList();
         for (String s : buildWhitelist) {

@@ -31,6 +31,9 @@ public class Listeners implements Listener {
         if (event.isCancelled()) {
             return;
         }
+        if (!this.plugin.util.worldEnabled(event.getPlayer().getWorld().getName())) {
+            return;
+        }
         Player p = event.getPlayer();
         if (p.hasPermission("gp_c.exempt.build")) {
             return;
@@ -63,6 +66,9 @@ public class Listeners implements Listener {
         if (event.isCancelled()) {
             return;
         }
+        if (!this.plugin.util.worldEnabled(event.getEntity().getWorld().getName())) {
+            return;
+        }
         Long claimID = this.plugin.util.getClaimID(event.getLocation());
         //We listen for custom because that's a plugin spawning 'em
         if (event.getSpawnReason().equals(CreatureSpawnEvent.SpawnReason.CHUNK_GEN)
@@ -85,7 +91,9 @@ public class Listeners implements Listener {
         if (event.isCancelled()) {
             return;
         }
-
+        if (!this.plugin.util.worldEnabled(event.getEntity().getWorld().getName())) {
+            return;
+        }
         Entity att = event.getDamager();
         Player attacker = null;
         if (att instanceof Player) {
@@ -97,7 +105,6 @@ public class Listeners implements Listener {
                 attacker = (Player) e;
             }
         }
-
         if (event.getEntity() instanceof Player && attacker instanceof Player) {
             Player attacked = (Player) event.getEntity();
             boolean attackerPVP = this.plugin.config.getPVP(this.plugin.util.getClaimID(attacker.getLocation()));
