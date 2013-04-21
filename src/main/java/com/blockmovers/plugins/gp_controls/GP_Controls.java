@@ -54,7 +54,11 @@ public class GP_Controls extends JavaPlugin implements Listener {
                             return true;
                         }
                         if (args[1].equalsIgnoreCase("list")) {
-                            cs.sendMessage(this.msg_prefix + ChatColor.GREEN + "Build list: Block(ID): " + ChatColor.RESET + this.util.list2String(this.config.buildWhitelist));
+                            if (args.length <= 2) {
+                                cs.sendMessage(this.msg_prefix + ChatColor.GREEN + "Build list: Block(ID): " + ChatColor.RESET + this.util.list2StringItems(this.config.buildWhitelist));
+                            } else {
+                                
+                            }
                         } else if (args[1].equalsIgnoreCase("add") || args[1].equalsIgnoreCase("remove")) {
                             if (args.length <= 2) {
                                 cs.sendMessage(this.msg_prefix + ChatColor.RED + "You must specify an item name or ID.");
@@ -92,6 +96,54 @@ public class GP_Controls extends JavaPlugin implements Listener {
                                 cs.sendMessage(this.msg_prefix + ChatColor.GREEN + "Removed '" + material.name() + "' from the build list!");
                             }
                             return true;
+                        } else if (args[1].equalsIgnoreCase("clear")) {
+                            this.config.buildWhitelist.clear();
+                            this.config.setListValue("build.whitelist", this.config.buildWhitelist);
+                            cs.sendMessage(this.msg_prefix + ChatColor.GREEN + "Cleared the build list!");
+                        } else {
+                            cs.sendMessage(this.msg_prefix + ChatColor.RED + "That is not a valid option!");
+                        }
+                    } else {
+                        cs.sendMessage(this.msg_prefix + ChatColor.RED + "You don't have permission to do this!");
+                        return false;
+                    }
+                } else if (args[0].equalsIgnoreCase("world")) {
+                    if (this.util.hasServerPerm(cs, true, "gp_c.admin")) {
+                        if (args.length <= 1) {
+                            cs.sendMessage(this.msg_prefix + ChatColor.RED + "Valid options are list, add, remove.");
+                            return true;
+                        }
+                        if (args[1].equalsIgnoreCase("list")) {
+                            cs.sendMessage(this.msg_prefix + ChatColor.GREEN + "Worlds list: " + ChatColor.RESET + this.util.list2StringWorlds(this.config.genWorldsEnabled));
+                        } else if (args[1].equalsIgnoreCase("add") || args[1].equalsIgnoreCase("remove")) {
+                            if (args.length <= 2) {
+                                cs.sendMessage(this.msg_prefix + ChatColor.RED + "You must specify a world name.");
+                                return true;
+                            }
+                            String world = args[2];
+                            Boolean onList = this.config.genWorldsEnabled.contains(world);
+                            if (args[1].equalsIgnoreCase("add")) {
+                                if (onList) {
+                                    cs.sendMessage(this.msg_prefix + ChatColor.RED + world + " is already enabled!");
+                                    return true;
+                                }
+                                this.config.genWorldsEnabled.add(world);
+                                this.config.setListValue("general.worlds.enable", this.config.genWorldsEnabled);
+                                cs.sendMessage(this.msg_prefix + ChatColor.GREEN + "Enabled the world '" + world + "'!");
+                            } else if (args[1].equalsIgnoreCase("remove")) {
+                                if (!onList) {
+                                    cs.sendMessage(this.msg_prefix + ChatColor.RED + world + " is not enabled!");
+                                    return true;
+                                }
+                                this.config.genWorldsEnabled.remove(world);
+                                this.config.setListValue("general.worlds.enable", this.config.genWorldsEnabled);
+                                cs.sendMessage(this.msg_prefix + ChatColor.GREEN + "Disabled the world '" + world + "'!");
+                            }
+                            return true;
+                        } else if (args[1].equalsIgnoreCase("clear")) {
+                            this.config.genWorldsEnabled.clear();
+                            this.config.setListValue("general.worlds.enable", this.config.genWorldsEnabled);
+                            cs.sendMessage(this.msg_prefix + ChatColor.GREEN + "Cleared the enabled worlds list!");
                         } else {
                             cs.sendMessage(this.msg_prefix + ChatColor.RED + "That is not a valid option!");
                         }
@@ -229,6 +281,9 @@ public class GP_Controls extends JavaPlugin implements Listener {
                     sb.append(ChatColor.GREEN).append("ON").append(ChatColor.RESET);
                 } else {
                     sb.append(ChatColor.RED).append("OFF").append(ChatColor.RESET);
+                }
+                if (claimOwner == null) {
+                    claimOwner = "Administrator";
                 }
                 if (claimOwner.equalsIgnoreCase("an administrator")) {
                     claimOwner = "Administrator";

@@ -39,7 +39,6 @@ public class Listeners implements Listener {
             return;
         }
         if (!this.plugin.util.inClaim(event.getBlock().getLocation())) {
-            //ToDo: Add whitelisting/blacklisting of blocks if not inside claims
             String block = event.getBlockPlaced().getType().name().toLowerCase();
             if (!this.plugin.config.buildWhitelist.contains(block)) {
                 event.setCancelled(true);

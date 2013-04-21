@@ -55,7 +55,7 @@ public class Configuration {
         buildwhitelist.add(Material.VINE.name());
         buildwhitelist.add(Material.STONE.name());
         buildwhitelist.add(Material.SAPLING.name());
-        plugin.getConfig().addDefault("build.whitelist", buildwhitelist);
+        plugin.getConfig().addDefault("global.build.list", buildwhitelist);
         plugin.getConfig().addDefault("default.enable.pvp", true);
         plugin.getConfig().addDefault("default.enable.mobs", true);
         plugin.getConfig().addDefault("default.enable.animals", true);
@@ -200,5 +200,11 @@ public class Configuration {
         this.plugin.getConfig().set("default.enable.animals", newValue);
         this.plugin.saveConfig();
         return newValue;
+    }
+    
+    public boolean itemInList(String block, String world) {
+        if (this.plugin.getConfig().contains(world + ".build.list")) {
+            
+        }
     }
 }

@@ -86,7 +86,24 @@ public class Utilities {
         return false;
     }
 
-    public String list2String(List<String> theList) {
+    public String list2StringWorlds(List<String> theList) {
+        StringBuilder sb = new StringBuilder();
+
+        int length = theList.size();
+        int n = 0;
+
+        for (String world : theList) {
+            n++;
+            sb.append(world);
+            if (n != length) {
+                sb.append(", ");
+            }
+        }
+
+        return sb.toString();
+    }
+    
+    public String list2StringItems(List<String> theList) {
         StringBuilder sb = new StringBuilder();
 
         int length = theList.size();
@@ -121,4 +138,6 @@ public class Utilities {
             return false;
         }
     }
+    
+    
 }
