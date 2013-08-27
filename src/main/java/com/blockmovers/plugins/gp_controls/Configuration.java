@@ -204,7 +204,8 @@ public class Configuration {
     
     public boolean itemInList(String block, String world) {
         if (this.plugin.getConfig().contains(world + ".build.list")) {
-            
+            return true;
         }
+        return false;
     }
 }
